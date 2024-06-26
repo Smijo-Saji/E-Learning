@@ -1,0 +1,27 @@
+.feeback-header img {
+  height: 70px;
+  border-radius: 50%;
+}
+.feedback-user p {
+  margin: 0;
+}
+.feedback-user > :first-child {
+  font-weight: 700;
+  font-size: larger;
+}
+.feedback-user > :last-child {
+  font-size: 14px;
+  font-weight: 500;
+}
+.feedback-body p {
+  text-align: center;
+  margin-top: 20px;
+}
+.feedback-card-div {
+  transition: all 0.5s ease-in-out;
+  cursor: pointer;
+  background-color: var(--card-bg);
+}
+.feedback-card-div:hover {
+  transform: scale(1.03);
+}

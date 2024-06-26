@@ -1,0 +1,13 @@
+.right-header-sec {
+  background-color: rgba(249, 184, 63, 0.225);
+  border-radius: 5px;
+}
+.lecture-card h6 {
+  font-weight: 500;
+}
+.lecture-card p {
+  font-size: 13px;
+}
+.right-header-sec {
+  background-color: #ebeff3;
+}

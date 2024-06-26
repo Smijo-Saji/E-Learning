@@ -1,0 +1,36 @@
+.image-div img {
+  width: 400px;
+}
+.text-1 {
+  font-size: clamp(40px, 5vw, 80px);
+}
+.text-2 {
+  font-size: 20px;
+  font-weight: 700;
+  margin-top: 30px;
+}
+.getstart-btn {
+  padding: 8px 15px;
+
+  background-color: var(--secondary-color);
+  border-radius: 5px;
+  color: var(--text-color);
+}
+.taught-heading {
+  font-weight: 700;
+}
+.social-media-community p {
+  margin: 0;
+  font-weight: bold;
+}
+.social-media-community h3 {
+  font-weight: 700;
+}
+.social-media-community-main {
+  background-color: var(--card-bg);
+}
+@media (width<750px) {
+  .image-div {
+    display: none;
+  }
+}

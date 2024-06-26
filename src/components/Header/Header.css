@@ -1,0 +1,31 @@
+.navbar-sec {
+  background-color: var(--secondary-color);
+  padding: 0;
+}
+.nav-img {
+  width: 80px;
+}
+.c1 {
+  color: var(--text-color);
+  font-weight: 400;
+  font-size: 17px;
+  padding: 0;
+}
+.c1:hover,
+.c1:focus {
+  color: var(--text2-color);
+}
+
+.active {
+  color: var(--text2-color);
+  /* border-bottom: 2px solid var(--text2-color); */
+}
+.navbar-toggler-icon {
+  background-image: url("https://i.postimg.cc/rFX751Yb/image-22.png") !important;
+}
+a {
+  text-decoration: none;
+}
+.nav-link {
+  padding: 0;
+}

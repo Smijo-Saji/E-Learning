@@ -1,0 +1,12 @@
+.card-body-sec h4 {
+  font-weight: 700;
+}
+.home-corse-card {
+  background-color: white;
+}
+.home-card-img {
+  transition: all 0.3s ease-in;
+}
+.home-card-img:hover {
+  transform: scale(1.05);
+}
