@@ -1,7 +1,51 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./Authentication.css";
+// import { UserData } from "../../context/UserContext.js";
+import { useNavigate } from "react-router-dom";
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
+import { userContext } from "../../context/UserContextProvider";
 
 function Authentication() {
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  const [otp, setOtp] = useState("");
+
+  const navigate = useNavigate();
+  // const { loginUser, btnLoading, registerUser, verifyOtp } = UserData();
+  const { loginUser, btnLoading, registerUser, verifyOtp } =
+    useContext(userContext);
+
+  const [loginDetails, setLoginDetails] = useState({
+    email: "",
+    password: "",
+  });
+
+  const [registerDetails, setRegisterDetails] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
+
+  console.log(registerDetails);
+
+  const handleLogin = async () => {
+    await loginUser(loginDetails, navigate);
+  };
+
+  const handleRegister = async () => {
+    await registerUser(registerDetails, handleShow);
+    setRegisterDetails({ name: "", email: "", password: "" });
+  };
+
+  const handleVerify = async () => {
+    console.log(otp);
+    await verifyOtp(Number(otp), navigate, handleClose);
+  };
+
   useEffect(() => {
     const sign_in_btn = document.querySelector("#sign-in-btn");
     const sign_up_btn = document.querySelector("#sign-up-btn");
@@ -46,6 +90,7 @@ function Authentication() {
     };
   }, []);
 
+  console.log(otp);
   return (
     <div className="container-div">
       <div className="forms-container">
@@ -54,13 +99,41 @@ function Authentication() {
             <h2 className="title">Sign in</h2>
             <div className="input-field">
               <i className="fas fa-user"></i>
-              <input type="text" placeholder="Username" required />
+              <input
+                type="text"
+                placeholder="Username"
+                required
+                value={loginDetails.email}
+                onChange={(e) =>
+                  setLoginDetails({
+                    ...loginDetails,
+                    ["email"]: e.target.value,
+                  })
+                }
+              />
             </div>
             <div className="input-field">
               <i className="fas fa-lock"></i>
-              <input type="password" placeholder="Password" required />
+              <input
+                type="password"
+                placeholder="Password"
+                required
+                value={loginDetails.password}
+                onChange={(e) =>
+                  setLoginDetails({
+                    ...loginDetails,
+                    ["password"]: e.target.value,
+                  })
+                }
+              />
             </div>
-            <button className="btn-sec solid">Login</button>
+            <button
+              className="btn-sec solid"
+              onClick={handleLogin}
+              disabled={btnLoading}
+            >
+              {btnLoading ? "Please Wait.." : "Login"}
+            </button>
             <p className="mt-2">
               Don't have an account?
               <span id="sign-up-btn-1"> Signup</span>
@@ -70,17 +143,56 @@ function Authentication() {
             <h2 className="title">Sign up</h2>
             <div className="input-field">
               <i className="fas fa-user"></i>
-              <input type="text" placeholder="Username" required />
+              <input
+                type="text"
+                placeholder="Username"
+                required
+                value={registerDetails.name}
+                onChange={(e) =>
+                  setRegisterDetails({
+                    ...registerDetails,
+                    ["name"]: e.target.value,
+                  })
+                }
+              />
             </div>
             <div className="input-field">
               <i className="fas fa-envelope"></i>
-              <input type="email" placeholder="Email" required />
+              <input
+                type="email"
+                placeholder="Email"
+                required
+                value={registerDetails.email}
+                onChange={(e) =>
+                  setRegisterDetails({
+                    ...registerDetails,
+                    ["email"]: e.target.value,
+                  })
+                }
+              />
             </div>
             <div className="input-field">
               <i className="fas fa-lock"></i>
-              <input type="password" placeholder="Password" required />
+              <input
+                type="password"
+                placeholder="Password"
+                required
+                value={registerDetails.password}
+                onChange={(e) =>
+                  setRegisterDetails({
+                    ...registerDetails,
+                    ["password"]: e.target.value,
+                  })
+                }
+              />
             </div>
-            <button className="btn-sec">Sign Up</button>
+            <button
+              className="btn-sec"
+              onClick={handleRegister}
+              disabled={btnLoading}
+            >
+              {btnLoading ? "Please Wait.." : "Register"}
+            </button>
             <p className="mt-2">
               Already have an account?
               <span id="sign-in-btn-1"> SignIn</span>
@@ -125,6 +237,31 @@ function Authentication() {
           />
         </div>
       </div>
+
+      <Modal show={show} onHide={handleClose} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Verify OTP</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="px-5">
+          <input
+            type="text"
+            className="form-control"
+            value={otp}
+            onChange={(e) => {
+              setOtp(e.target.value);
+            }}
+          />
+        </Modal.Body>
+        <Modal.Footer className="d-flex justify-content-center">
+          <button
+            className="btn btn-success"
+            onClick={handleVerify}
+            disabled={btnLoading}
+          >
+            {btnLoading ? "Please Wait.." : "Verify"}
+          </button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 }

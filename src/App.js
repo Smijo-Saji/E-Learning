@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import "./App.css";
 import Header from "./components/Header/Header";
 import Home from "./pages/Home/Home";
@@ -16,38 +16,56 @@ import Lecture from "./pages/Lecture/Lecture";
 import AdminDashBoard from "./Admin/Dashboard/AdminDashBoard";
 import AdminCourses from "./Admin/Courses/AdminCourses";
 import AdminUsers from "./Admin/Users/AdminUsers";
+// import { UserData } from "./context/UserContext.js";
+import Loading from "./components/Loading/Loading.js";
+import { useContext } from "react";
+import { userContext } from "./context/UserContextProvider.js";
 
 function App() {
+  // const { isAuth, user, loading } = UserData();
+  const { isAuth, user, loading } = useContext(userContext);
+
   return (
     <div className="App ">
-      <Header />
+      <Header isAuth={isAuth} />
 
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/courses" element={<Courses />} />
-        <Route
-          path="/courses/coursedescription"
-          element={<CourseDescription />}
-        />
-        <Route
-          path="/courses/coursedescription/paymentsuccess"
-          element={<PaymementSuccess />}
-        />
-        <Route
-          path="/courses/coursedescription/paymentsuccess/dashboard"
-          element={<DashBoard />}
-        />
-        <Route path="/courses/study" element={<CourseStudy />} />
-        <Route path="/courses/lecture" element={<Lecture />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/authentication" element={<Authentication />} />
-        <Route path="/authentication/verification" element={<Verification />} />
+      {loading ? (
+        <Loading />
+      ) : (
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/courses" element={<Courses />} />
 
-        {/* admin */}
-        <Route path="/admin/dashboard" element={<AdminDashBoard />} />
-        <Route path="/admin/course" element={<AdminCourses />} />
-        <Route path="/admin/users" element={<AdminUsers />} />
-      </Routes>
+          <Route
+            path="/account"
+            element={
+              isAuth ? (
+                <DashBoard user={user} />
+              ) : (
+                <Navigate to={"/authentication"} />
+              )
+            }
+          />
+
+          <Route path="/course/:id" element={<CourseDescription />} />
+          <Route
+            path="/courses/coursedescription/paymentsuccess"
+            element={<PaymementSuccess />}
+          />
+          {/* check */}
+
+          <Route path="/courses/study" element={<CourseStudy />} />
+          <Route path="/courses/lecture" element={<Lecture />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/authentication" element={<Authentication />} />
+          <Route path="/verify" element={<Verification />} />
+
+          {/* admin */}
+          <Route path="/admin/dashboard" element={<AdminDashBoard />} />
+          <Route path="/admin/course" element={<AdminCourses />} />
+          <Route path="/admin/users" element={<AdminUsers />} />
+        </Routes>
+      )}
       <Footer />
     </div>
   );

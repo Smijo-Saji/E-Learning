@@ -10,14 +10,16 @@ function HeroSec() {
       <div className="particles-wrapper">
         <ParticlesComponent id="particles" />
       </div>
-      <Row className="my-4">
+      <Row className="">
         <Col lg={6} mg={6} className="d-flex justify-content-center">
-          <div class="hero_animation">
-            <img
-              src="https://edmy-react.hibootstrap.com/images/banner/banner-img-1.png"
-              alt=""
-              class="w-100"
-            />
+          <div className="rotating">
+            <div class="hero_animation p-3">
+              <img
+                src="https://edmy-react.hibootstrap.com/images/banner/banner-img-1.png"
+                alt=""
+                class="w-100"
+              />
+            </div>
           </div>
         </Col>
         <Col lg={6} mg={6}>

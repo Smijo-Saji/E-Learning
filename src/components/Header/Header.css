@@ -29,3 +29,7 @@ a {
 .nav-link {
   padding: 0;
 }
+
+.custom-nav-dropdown .dropdown-toggle::after {
+  border-top-color: white !important;
+}

@@ -1,11 +1,13 @@
 .hero_animation {
-  width: 450px; /* Adjust as needed */
-  height: 450px; /* Adjust as needed */
+  width: 500px; /* Adjust as needed */
+  height: 500px; /* Adjust as needed */
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
   /* background: var(--secondary-color); */
+  /* border-top: 1px solid green;
+  border-bottom: 1px solid green; */
 }
 
 .hero_animation img {
