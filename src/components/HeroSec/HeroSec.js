@@ -1,10 +1,11 @@
 import React from "react";
 import "./HeroSec.css";
 import { Row, Col } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ParticlesComponent from "../ParticlesComponent";
 
 function HeroSec() {
+  const navigate = useNavigate();
   return (
     <div className="container-fluid hero-sec-div">
       <div className="particles-wrapper">
@@ -12,7 +13,7 @@ function HeroSec() {
       </div>
       <Row className="">
         <Col lg={6} mg={6} className="d-flex justify-content-center">
-          <div className="rotating">
+          <div className="rotating" data-aos="fade-up">
             <div class="hero_animation p-3">
               <img
                 src="https://edmy-react.hibootstrap.com/images/banner/banner-img-1.png"
@@ -23,7 +24,7 @@ function HeroSec() {
           </div>
         </Col>
         <Col lg={6} mg={6}>
-          <div className="hero-text-div">
+          <div className="hero-text-div" data-aos="fade-up">
             <div className="hero-text-h1">
               <h1>Imporve Your Online</h1>
               <h1>Learning Experience</h1>
@@ -36,7 +37,9 @@ function HeroSec() {
               </p>
             </div>
             <div className="hero-button my-3">
-              <button className="me-4">Explore Here</button>
+              <button className="me-4" onClick={() => navigate("/courses")}>
+                Explore Here
+              </button>
               <img
                 src="https://i.postimg.cc/Mpz8kQ77/image-23-removebg-preview.png"
                 alt=""

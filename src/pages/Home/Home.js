@@ -11,13 +11,10 @@ function Home() {
   return (
     <div className="home-div ">
       <HeroSec />
-      <div className="best-courses-div my-5 ">
+      <div className="best-courses-div mb-5 mt-3 ">
         <h2 className="text-center taught-heading mb-4">Our Best Courses</h2>
-        <div className="d-flex justify-content-evenly flex-wrap gap-3">
-          <HomeCrad />
-          <HomeCrad />
-          <HomeCrad />
-        </div>
+
+        <HomeCrad />
       </div>
       <div className="marquee-div  container my-5">
         <h2 className="text-center taught-heading ">200+ topics taught...</h2>

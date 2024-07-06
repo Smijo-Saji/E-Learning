@@ -1,7 +1,7 @@
 .main-course-div {
   display: flex;
   width: 100%;
-  height: 100vh;
+  /* height: 100vh; */
   overflow-y: scroll;
   scrollbar-width: none;
 }
@@ -12,6 +12,15 @@
 
 .course-add-div {
   width: 30%;
+}
+.admin-course-card-sec {
+  min-height: 70vh;
+  max-height: 72vh;
+  overflow-y: scroll;
+  scrollbar-width: none;
+}
+.error-msg {
+  font-size: 13px;
 }
 
 @media (max-width: 768px) {

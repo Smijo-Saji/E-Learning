@@ -1,53 +1,99 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import "./CourseDescription.css";
 import { Col, Container, Row } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { courseContext } from "../../context/CourseContextProvider";
+import { base_url } from "../..";
 
-function CourseDescription() {
-  const checkoutHandler = () => {};
+function CourseDescription({ user }) {
+  const params = useParams();
+  const navigate = useNavigate();
+  const { fetchCourse, course } = useContext(courseContext);
+
+  useEffect(() => {
+    fetchCourse(params.id);
+  }, []);
+
   return (
-    <div style={{ minHeight: "75vh" }} className="d-flex align-items-center">
-      <Container>
-        <Row className="my-3">
-          <Col lg={6} md={6} className="d-flex align-items-center">
-            <img
-              src="https://i.postimg.cc/J0TpsSVF/1-Kc-Ejo-k-Tc-NSC6-LHyt9edg.jpg"
-              alt=""
-              style={{ width: "100%" }}
-              className="rounded shadow"
-            />
-          </Col>
-          <Col lg={6} md={6} className="d-flex align-items-center">
-            <div className="description-sec-div">
-              <h2>React Full Stack</h2>
-              <p>
-                A React Full Stack Developer designs and develops end-to-end web
-                applications, utilizing React for the front-end and Node.js,
-                Express, and databases like MongoDB or SQL for the back-end.
-              </p>
-              <div className="d-flex align-items-center gap-3 my-4 flex-wrap">
-                <p className="lecture-div m-0">
-                  <i class="fa-solid fa-user-tie me-3"></i>Instructor :
-                  Prashanth
-                </p>
-                <p className="lecture-div m-0">
-                  <i class="fa-regular fa-clock me-3"></i>Doration : 5hrs
-                </p>
-              </div>
-              <p>
-                Lets Get Strated Course At ₹{" "}
-                <span className="fw-bold">1299 /-</span>
-              </p>
-              <Link to={"/courses/coursedescription/paymentsuccess"}>
-                <button className="btn btn-success" onClick={checkoutHandler}>
-                  Buy Now
-                </button>
-              </Link>
-            </div>
-          </Col>
-        </Row>
-      </Container>
-    </div>
+    <>
+      <div style={{ minHeight: "80vh" }} className="d-flex align-items-center">
+        {course && (
+          <Container>
+            <Row className="my-3">
+              <Col lg={8} md={6} className="d-flex align-items-center">
+                <img
+                  src={`${base_url}/${course.image}`}
+                  alt=""
+                  style={{ width: "100%" }}
+                  className="rounded shadow"
+                />
+              </Col>
+              <Col lg={4} md={6} className="d-flex align-items-center">
+                <div className="description-sec-div">
+                  <h2>{course.title}</h2>
+                  <p>{course.description}</p>
+                  <div className="d-flex align-items-center gap-3 mt-4 mb-2 flex-wrap">
+                    <p className="lecture-div m-0">
+                      <i class="fa-solid fa-user-tie me-3"></i>Instructor :{" "}
+                      {course.createdBy}
+                    </p>
+                    <p className="lecture-div m-0">
+                      <i class="fa-regular fa-clock me-3"></i>Doration :{" "}
+                      {course.duration}hrs
+                    </p>
+                  </div>
+                  <p
+                    className="lecture-div m-0 mb-2"
+                    style={{ width: "300px" }}
+                  >
+                    <i class="fa-solid fa-layer-group me-3"></i>Category :{" "}
+                    {course.category}
+                  </p>
+                  <p
+                    className="lecture-div m-0 mb-2"
+                    style={{ width: "250px" }}
+                  >
+                    <i class="fa-solid fa-trophy me-3"></i>Certificate of
+                    completion
+                  </p>
+                  <p
+                    className="lecture-div m-0 mb-4"
+                    style={{ width: "200px" }}
+                  >
+                    <i class="fa-solid fa-infinity me-3"></i>Full lifetime
+                    access
+                  </p>
+                  <p>
+                    Lets Get Strated Course At ₹{" "}
+                    <span className="fw-bold">{course.price} /-</span>
+                  </p>
+
+                  {user && user.subscription.includes(course._id) ? (
+                    <button
+                      className="btn btn-success"
+                      style={{ width: "250px" }}
+                      onClick={() => navigate(`/courses/lecture/${course._id}`)}
+                    >
+                      Study
+                    </button>
+                  ) : (
+                    <>
+                      <button
+                        className="btn btn-success mb-2"
+                        style={{ width: "250px" }}
+                        onClick={() => navigate(`/checkout/${params.id}`)}
+                      >
+                        Enroll Now
+                      </button>
+                    </>
+                  )}
+                </div>
+              </Col>
+            </Row>
+          </Container>
+        )}
+      </div>
+    </>
   );
 }
 

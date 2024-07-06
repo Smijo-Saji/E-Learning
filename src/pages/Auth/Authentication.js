@@ -1,12 +1,15 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./Authentication.css";
-// import { UserData } from "../../context/UserContext.js";
-import { useNavigate } from "react-router-dom";
-import Button from "react-bootstrap/Button";
+import { Link, useNavigate } from "react-router-dom";
 import Modal from "react-bootstrap/Modal";
 import { userContext } from "../../context/UserContextProvider";
+import { courseContext } from "../../context/CourseContextProvider";
+import ReCAPTCHA from "react-google-recaptcha";
+import toast from "react-hot-toast";
 
 function Authentication() {
+  const [passShowLogin, setPassShowLogin] = useState(true);
+  const [passShowRegister, setPassShowRegister] = useState(true);
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -14,8 +17,14 @@ function Authentication() {
 
   const [otp, setOtp] = useState("");
 
+  const [showCaptche, setShowCaptche] = useState(false);
+
+  function onChange(value) {
+    setShowCaptche(true);
+  }
+
   const navigate = useNavigate();
-  // const { loginUser, btnLoading, registerUser, verifyOtp } = UserData();
+  const { fetchMyCourse } = useContext(courseContext);
   const { loginUser, btnLoading, registerUser, verifyOtp } =
     useContext(userContext);
 
@@ -30,19 +39,24 @@ function Authentication() {
     password: "",
   });
 
-  console.log(registerDetails);
-
   const handleLogin = async () => {
-    await loginUser(loginDetails, navigate);
+    await loginUser(loginDetails, navigate, fetchMyCourse);
   };
 
   const handleRegister = async () => {
-    await registerUser(registerDetails, handleShow);
+    if (
+      registerDetails.name === "" ||
+      registerDetails.email === "" ||
+      registerDetails.password === ""
+    ) {
+      toast.error("Please Fill Datas");
+    } else {
+      await registerUser(registerDetails, handleShow);
+    }
     setRegisterDetails({ name: "", email: "", password: "" });
   };
 
   const handleVerify = async () => {
-    console.log(otp);
     await verifyOtp(Number(otp), navigate, handleClose);
   };
 
@@ -90,7 +104,6 @@ function Authentication() {
     };
   }, []);
 
-  console.log(otp);
   return (
     <div className="container-div">
       <div className="forms-container">
@@ -115,7 +128,7 @@ function Authentication() {
             <div className="input-field">
               <i className="fas fa-lock"></i>
               <input
-                type="password"
+                type={passShowLogin ? "password" : "text"}
                 placeholder="Password"
                 required
                 value={loginDetails.password}
@@ -126,6 +139,17 @@ function Authentication() {
                   })
                 }
               />
+              {passShowLogin ? (
+                <i
+                  class="fa-solid fa-eye"
+                  onClick={() => setPassShowLogin(!passShowLogin)}
+                ></i>
+              ) : (
+                <i
+                  class="fa-regular fa-eye"
+                  onClick={() => setPassShowLogin(!passShowLogin)}
+                ></i>
+              )}
             </div>
             <button
               className="btn-sec solid"
@@ -137,6 +161,11 @@ function Authentication() {
             <p className="mt-2">
               Don't have an account?
               <span id="sign-up-btn-1"> Signup</span>
+            </p>
+            <p>
+              <Link to={"/forget"} className="forget-link">
+                Forgot password?
+              </Link>
             </p>
           </div>
           <div className="sign-up-form form-div">
@@ -174,7 +203,7 @@ function Authentication() {
             <div className="input-field">
               <i className="fas fa-lock"></i>
               <input
-                type="password"
+                type={passShowRegister ? "password" : "text"}
                 placeholder="Password"
                 required
                 value={registerDetails.password}
@@ -185,6 +214,17 @@ function Authentication() {
                   })
                 }
               />
+              {passShowRegister ? (
+                <i
+                  class="fa-solid fa-eye"
+                  onClick={() => setPassShowRegister(!passShowRegister)}
+                ></i>
+              ) : (
+                <i
+                  class="fa-regular fa-eye"
+                  onClick={() => setPassShowRegister(!passShowRegister)}
+                ></i>
+              )}
             </div>
             <button
               className="btn-sec"
@@ -239,28 +279,42 @@ function Authentication() {
       </div>
 
       <Modal show={show} onHide={handleClose} centered>
-        <Modal.Header closeButton>
-          <Modal.Title>Verify OTP</Modal.Title>
-        </Modal.Header>
         <Modal.Body className="px-5">
-          <input
-            type="text"
-            className="form-control"
-            value={otp}
-            onChange={(e) => {
-              setOtp(e.target.value);
-            }}
-          />
+          <div className="d-flex flex-column align-items-center py-2">
+            <h3>OTP</h3>
+            <img
+              src="https://i.postimg.cc/fTRH2Ycr/Screenshot-2024-07-01-112137-1.png"
+              alt=""
+              style={{ width: "200px" }}
+            />
+            <input
+              type="text"
+              className="form-control my-3 text-center"
+              value={otp}
+              onChange={(e) => {
+                setOtp(e.target.value);
+              }}
+              style={{ width: "200px" }}
+            />
+            <h4>Verification Code</h4>
+            <p className="text-center mt-3 mb-5">
+              We have sent a verification code to your registered email-id
+            </p>
+            <ReCAPTCHA
+              sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+              onChange={onChange}
+            />
+            {showCaptche && (
+              <button
+                className="btn btn-success mt-3"
+                onClick={handleVerify}
+                disabled={btnLoading}
+              >
+                {btnLoading ? "Please Wait.." : "Verify"}
+              </button>
+            )}
+          </div>
         </Modal.Body>
-        <Modal.Footer className="d-flex justify-content-center">
-          <button
-            className="btn btn-success"
-            onClick={handleVerify}
-            disabled={btnLoading}
-          >
-            {btnLoading ? "Please Wait.." : "Verify"}
-          </button>
-        </Modal.Footer>
       </Modal>
     </div>
   );

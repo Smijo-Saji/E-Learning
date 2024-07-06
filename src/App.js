@@ -5,25 +5,31 @@ import Home from "./pages/Home/Home";
 import Courses from "./pages/Courses/Courses";
 
 import Authentication from "./pages/Auth/Authentication";
-import Verification from "./pages/Auth/Verification";
 import Footer from "./components/Footer/Footer";
 import About from "./pages/About/About";
 import CourseDescription from "./pages/CourseDescription/CourseDescription";
 import PaymementSuccess from "./pages/PaymentSuccess/PaymementSuccess";
 import DashBoard from "./pages/Dashboard/DashBoard";
-import CourseStudy from "./pages/CourseStudy/CourseStudy";
+
 import Lecture from "./pages/Lecture/Lecture";
 import AdminDashBoard from "./Admin/Dashboard/AdminDashBoard";
 import AdminCourses from "./Admin/Courses/AdminCourses";
 import AdminUsers from "./Admin/Users/AdminUsers";
-// import { UserData } from "./context/UserContext.js";
+
 import Loading from "./components/Loading/Loading.js";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { userContext } from "./context/UserContextProvider.js";
+import ForgetPassword from "./pages/Auth/ForgetPassword.js";
+import ResetPassword from "./pages/Auth/ResetPassword.js";
+import Aos from "aos";
+import CheckOut from "./pages/CheckOut/CheckOut.js";
 
 function App() {
-  // const { isAuth, user, loading } = UserData();
   const { isAuth, user, loading } = useContext(userContext);
+
+  useEffect(() => {
+    Aos.init({ duration: 2000 });
+  }, []);
 
   return (
     <div className="App ">
@@ -37,7 +43,7 @@ function App() {
           <Route path="/courses" element={<Courses />} />
 
           <Route
-            path="/account"
+            path="/:id/dashboard"
             element={
               isAuth ? (
                 <DashBoard user={user} />
@@ -47,18 +53,52 @@ function App() {
             }
           />
 
-          <Route path="/course/:id" element={<CourseDescription />} />
           <Route
-            path="/courses/coursedescription/paymentsuccess"
-            element={<PaymementSuccess />}
+            path="/course/:id"
+            element={
+              isAuth ? (
+                <CourseDescription user={user} />
+              ) : (
+                <Navigate to={"/authentication"} />
+              )
+            }
           />
-          {/* check */}
-
-          <Route path="/courses/study" element={<CourseStudy />} />
-          <Route path="/courses/lecture" element={<Lecture />} />
+          <Route
+            path="/checkout/:id"
+            element={
+              isAuth ? (
+                <CheckOut user={user} />
+              ) : (
+                <Navigate to={"/authentication"} />
+              )
+            }
+          />
+          <Route
+            path="/payment-success/:id"
+            element={
+              isAuth ? (
+                <PaymementSuccess />
+              ) : (
+                <Navigate to={"/authentication"} />
+              )
+            }
+          />
+          {/* /courses */}
+          <Route
+            path="/courses/lecture/:id"
+            element={
+              isAuth ? (
+                <Lecture user={user} />
+              ) : (
+                <Navigate to={"/authentication"} />
+              )
+            }
+          />
           <Route path="/about" element={<About />} />
           <Route path="/authentication" element={<Authentication />} />
-          <Route path="/verify" element={<Verification />} />
+
+          <Route path="/forget" element={<ForgetPassword />} />
+          <Route path="/reset-password/:token" element={<ResetPassword />} />
 
           {/* admin */}
           <Route path="/admin/dashboard" element={<AdminDashBoard />} />

@@ -32,3 +32,14 @@
   background-color: var(--secondary-color);
   color: white;
 }
+
+.warnig-model-img {
+  width: 100px;
+  height: 100px;
+}
+
+@media (width<330px) {
+  .course-card {
+    height: 22rem !important;
+  }
+}

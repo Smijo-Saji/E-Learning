@@ -10,3 +10,7 @@
   --card-bg: #f6f8f9;
   --text2-color: rgb(237, 174, 47);
 }
+
+body {
+  scroll-behavior: smooth;
+}

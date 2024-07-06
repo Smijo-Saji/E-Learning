@@ -1,0 +1,25 @@
+.commentbox-input {
+  border: none;
+  outline: none;
+  border-bottom: 1px solid rgb(96, 95, 95);
+  width: 100%;
+}
+.commentbox-btn {
+  padding: 3px 8px;
+  border-radius: 5px;
+  color: white;
+  border: none;
+  outline: none;
+}
+.user-name {
+  font-size: 13px;
+}
+.comment-time {
+  font-size: 10px;
+  margin: 0;
+}
+.comments-sec {
+  max-height: 50vh;
+  overflow-y: scroll;
+  scrollbar-width: none;
+}

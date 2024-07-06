@@ -12,7 +12,7 @@ import { userContext } from "../../context/UserContextProvider";
 function Header({ isAuth }) {
   const navigate = useNavigate();
   // const { setIsAuth, setUser } = UserData();
-  const { setIsAuth, setUser } = useContext(userContext);
+  const { setIsAuth, setUser, user } = useContext(userContext);
 
   const logoutHandler = () => {
     localStorage.clear();
@@ -23,15 +23,22 @@ function Header({ isAuth }) {
   };
   return (
     <div>
-      <Navbar expand="lg" className="navbar-sec shadow">
+      <Navbar expand="lg" className="navbar-sec shadow py-3">
         <Container>
           <Navbar.Brand href="#home">
             <Link to={"/"}>
-              <img
-                src="https://i.postimg.cc/4NKN3kSG/LOGO-EDUZEN-removebg-preview.png"
-                alt=""
-                className="nav-img"
-              />
+              <div className="d-flex align-items-center gap-2 ">
+                <img
+                  src="https://i.postimg.cc/k4rPNVKg/image-24.png"
+                  alt=""
+                  className="nav-icon"
+                />
+                <img
+                  src="https://i.postimg.cc/TY6B3MqB/stride-property-group-spg-new-zealand-removebg-preview.png"
+                  alt=""
+                  className="nav-img"
+                />
+              </div>
             </Link>
           </Navbar.Brand>
           <Navbar.Toggle
@@ -40,7 +47,6 @@ function Header({ isAuth }) {
           />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ms-auto">
-              {/* Use NavLink instead of Link */}
               <NavLink
                 exact
                 to={"/"}
@@ -85,12 +91,12 @@ function Header({ isAuth }) {
               >
                 {isAuth && (
                   <NavDropdown.Item href="#action/3.1">
-                    <Link className="text-black" to={"/account"}>
+                    <Link className="text-black" to={`${user._id}/dashboard`}>
                       <img
                         src="https://i.postimg.cc/brQskh8q/user-profile-icon-free-vector-removebg-preview.png"
                         alt=""
                         style={{ width: "20px" }}
-                        className="me-1"
+                        className="me-2"
                       />
                       Profile
                     </Link>
@@ -103,7 +109,7 @@ function Header({ isAuth }) {
                         src="https://i.postimg.cc/pVDSy68C/download-removebg-preview-13.png"
                         alt=""
                         style={{ width: "20px" }}
-                        className="me-1"
+                        className="me-2"
                       />
                       Login/SignUp
                     </Link>
@@ -115,7 +121,7 @@ function Header({ isAuth }) {
                       src="https://i.postimg.cc/nLVNBY45/sign-out-logout-icon-in-circle-line-vector-removebg-preview.png"
                       alt=""
                       style={{ width: "20px" }}
-                      className="me-1"
+                      className="me-2"
                     />
                     LogOut
                   </NavDropdown.Item>

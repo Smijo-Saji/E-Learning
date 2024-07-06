@@ -14,7 +14,21 @@
   text-align: center;
   margin-top: 5px;
   color: white;
+  transition: all 0.5s ease-in-out;
 }
 .box:hover {
-  background-color: var(--primary-color);
+  transform: scale(1.01);
+}
+
+.inner-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 5px solid white;
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+}
+.inner-box-p {
+  font-size: 30px;
 }
