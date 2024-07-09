@@ -6,7 +6,7 @@ import { BrowserRouter } from "react-router-dom";
 import UserContextProvider from "./context/UserContextProvider.js";
 import CourseContextProvider from "./context/CourseContextProvider.js";
 
-export const base_url = "http://localhost:5000";
+export const base_url = "https://e-learning-server-do3y.onrender.com";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
