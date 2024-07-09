@@ -177,7 +177,9 @@ function CheckOut() {
               </div>
               <div className="d-flex justify-content-between mt-5">
                 <p className="fw-bold">Total Amount</p>
-                <p className="fw-bold">{course.price + 0.02} USD</p>
+                <p className="fw-bold">
+                  {(course.price + 0.02).toFixed(2)} USD
+                </p>
               </div>
               {verify === "Verify" && (
                 <button
