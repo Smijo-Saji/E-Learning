@@ -64,7 +64,7 @@ function CourseDescription({ user }) {
                     access
                   </p>
                   <p>
-                    Lets Get Strated Course At ₹{" "}
+                    Lets Get Strated Course At ${" "}
                     <span className="fw-bold">{course.price} /-</span>
                   </p>
 

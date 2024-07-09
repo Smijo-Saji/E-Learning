@@ -197,6 +197,75 @@ function Lecture({ user }) {
     }
   };
 
+  //edit Lecture
+  const [titleEdit, setTitleEdit] = useState("");
+  const [descriptionEdit, setDescriptionEdit] = useState("");
+  const [videoEdit, setVideoEdit] = useState("");
+  const [showEdit, setShowEdit] = useState(false);
+  const [videoPreviewEdit, setVideoPreviewEdit] = useState("");
+
+  const handleCloseEdit = () => setShowEdit(false);
+  const handleShowEdit = () => setShowEdit(true);
+
+  const changeVideoHandlerEdit = (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+
+    reader.readAsDataURL(file);
+
+    reader.onloadend = () => {
+      setVideoPreviewEdit(reader.result);
+      setVideoEdit(file);
+    };
+  };
+
+  const handleEditClick = async (id) => {
+    setSelectedLecId(id);
+    const { data } = await axios.get(`${base_url}/api/lecture/${id}`, {
+      headers: {
+        token: localStorage.getItem("token"),
+      },
+    });
+    setTitleEdit(data.lecture.title);
+    setDescriptionEdit(data.lecture.description);
+    setVideoPreviewEdit(`${base_url}/${data.lecture.video}`);
+    handleShowEdit(true);
+  };
+
+  const handleEditSubmit = async (e) => {
+    e.preventDefault();
+    setBtnLoading(true);
+    const myForm = new FormData();
+    myForm.append("title", titleEdit);
+    myForm.append("description", descriptionEdit);
+    if (videoEdit) {
+      myForm.append("file", videoEdit);
+    }
+
+    try {
+      const { data } = await axios.put(
+        `${base_url}/api/lecture/${selectedLecId}`,
+        myForm,
+        {
+          headers: {
+            token: localStorage.getItem("token"),
+          },
+        }
+      );
+      toast.success(data.message);
+      setBtnLoading(false);
+      handleCloseEdit(false);
+      setTitleEdit("");
+      setDescriptionEdit("");
+      setVideoEdit("");
+      setVideoPreviewEdit("");
+      fetchLectures();
+    } catch (error) {
+      toast.error(error.response.data.message);
+      setBtnLoading(false);
+    }
+  };
+
   useEffect(() => {
     if (user && user.role !== "admin" && !user.subscription.includes(params.id))
       return navigate("/");
@@ -358,12 +427,20 @@ function Lecture({ user }) {
                           </div>
 
                           {user && user.role === "admin" && (
-                            <button
-                              className="btn btn-danger mt-2"
-                              onClick={() => handleDeleteClick(e._id)}
-                            >
-                              Delete Lec {i + 1}
-                            </button>
+                            <div className="d-flex gap-2">
+                              <button
+                                className="btn btn-danger mt-2"
+                                onClick={() => handleDeleteClick(e._id)}
+                              >
+                                Delete Lec {i + 1}
+                              </button>
+                              <button
+                                className="btn border mt-2"
+                                onClick={() => handleEditClick(e._id)}
+                              >
+                                <i class="fa-regular fa-pen-to-square"></i>
+                              </button>
+                            </div>
                           )}
                           <hr className="m-1" />
                         </>
@@ -378,6 +455,8 @@ function Lecture({ user }) {
           </Row>
         </Container>
       )}
+
+      {/* add model */}
 
       <Modal show={show} onHide={handleClose} centered>
         <Modal.Header>
@@ -466,6 +545,70 @@ function Lecture({ user }) {
             </div>
           </div>
         </Modal.Body>
+      </Modal>
+
+      {/* Modal for editing lecture */}
+      <Modal show={showEdit} onHide={handleCloseEdit} centered>
+        <Modal.Header>
+          <Modal.Title>Edit Lecture</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form.Floating className="mb-3">
+            <Form.Control
+              id="floatingInputCustom"
+              type="text"
+              placeholder="name@example.com"
+              required
+              value={titleEdit}
+              onChange={(e) => {
+                setTitleEdit(e.target.value);
+              }}
+            />
+            <label htmlFor="floatingInputCustom">Title</label>
+          </Form.Floating>
+          <FloatingLabel controlId="floatingTextarea2" label="Description">
+            <Form.Control
+              as="textarea"
+              placeholder="Description"
+              style={{ height: "100px" }}
+              required
+              value={descriptionEdit}
+              onChange={(e) => {
+                setDescriptionEdit(e.target.value);
+              }}
+            />
+          </FloatingLabel>
+
+          <input
+            type="file"
+            className="mt-3 form-control"
+            placeholder="Choose Video"
+            required
+            onChange={changeVideoHandlerEdit}
+          />
+
+          {videoPreviewEdit && (
+            <video
+              src={videoPreviewEdit}
+              alt=""
+              width={"100%"}
+              controls
+              className="rounded mt-3"
+            />
+          )}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseEdit}>
+            Close
+          </Button>
+          <Button
+            disabled={btnLoading}
+            variant="primary"
+            onClick={(e) => handleEditSubmit(e)}
+          >
+            {btnLoading ? "Updating..." : "Update"}
+          </Button>
+        </Modal.Footer>
       </Modal>
     </div>
   );

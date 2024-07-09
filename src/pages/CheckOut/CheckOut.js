@@ -162,18 +162,22 @@ function CheckOut() {
           </Col>
           <Col lg={4} md={4} className="p-3">
             <div className=" py-4 px-4 payment-div rounded">
-              <h4 className="text-center mb-5">Payment Details</h4>
+              <h4 className=" text-center mb-5">Payment Details</h4>
               <div className="d-flex justify-content-between">
                 <p>Course Amount</p>
-                <p>{course.price} INR</p>
+                <p>{course.price} USD</p>
+              </div>
+              <div className="d-flex justify-content-between">
+                <p>Tax Amount</p>
+                <p>0.02 USD</p>
               </div>
               <div className="d-flex justify-content-between mt-3">
                 <p>Special Discount</p>
-                <p>0 INR</p>
+                <p>0 USD</p>
               </div>
               <div className="d-flex justify-content-between mt-5">
                 <p className="fw-bold">Total Amount</p>
-                <p className="fw-bold">{course.price} INR</p>
+                <p className="fw-bold">{course.price + 0.02} USD</p>
               </div>
               {verify === "Verify" && (
                 <button
@@ -183,7 +187,9 @@ function CheckOut() {
                   {verify}
                 </button>
               )}
-              {verify === "Verified" && <PayPalButton price={course?.price} />}
+              {verify === "Verified" && (
+                <PayPalButton price={course?.price + 0.02} />
+              )}
             </div>
           </Col>
         </Row>

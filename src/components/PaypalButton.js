@@ -13,7 +13,7 @@ const PayPalButton = ({ price }) => {
   const navigate = useNavigate();
   const params = useParams();
 
-  const checkoutHandler = async () => {
+  const checkoutHandler = async (id) => {
     const token = localStorage.getItem("token");
 
     try {
@@ -26,7 +26,7 @@ const PayPalButton = ({ price }) => {
           },
         }
       );
-      navigate(`/payment-success/${data._id}`);
+      navigate(`/payment-success/${id}`);
 
       await fetchUser();
       await fetchCourses();
@@ -60,7 +60,7 @@ const PayPalButton = ({ price }) => {
           onApprove: function (data, actions) {
             return actions.order.capture().then(function (details) {
               // Call the checkoutHandler function
-              checkoutHandler();
+              checkoutHandler(details.id);
             });
           },
         })

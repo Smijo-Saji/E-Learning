@@ -53,7 +53,7 @@ function CourseCard({ course }) {
           Instructor - <span>{course.createdBy}</span>
         </p>
         <div className="d-flex justify-content-between">
-          <p className="couse-price">₹ {course.price}</p>
+          <p className="couse-price">{course.price} $</p>
           <div className="course-hours">
             <i class="fa-regular fa-clock me-2"></i>
             {course.duration}hrs

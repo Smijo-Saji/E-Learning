@@ -35,7 +35,7 @@ function HomeCrad() {
             />
             <div className="card-body-sec mt-3 d-flex flex-column align-items-center">
               <h4>{i.title}</h4>
-              <p>{i.description}</p>
+              <p>{i.description.slice(0, 130)}</p>
               <button
                 className="btn btn-success"
                 onClick={() => navigate("/courses")}
